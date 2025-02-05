@@ -1,0 +1,15 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    background-color: hsl(0, 20%, 66%);
+    text-align: center;
+}
+
+body {
+    margin-top: 40px;
+}
+
