@@ -1,3 +1,7 @@
+import BaseScene from './BaseScene.js';
+import MainMenu from './MainMenu.js';
+import LevelOne from './LevelOne.js';
+
 const gameState = {
     player: {
         }
@@ -14,10 +18,10 @@ const gameState = {
         default: 'arcade',
         arcade: {
             gravity: { y: 0 },
-            debug: false
+            debug: true
         }
     },
-    scene: [MainMenu, LevelOne]
+    scene: [MainMenu, LevelOne, BaseScene]
 };
    
    const game = new Phaser.Game(config);
