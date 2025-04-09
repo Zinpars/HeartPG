@@ -2,11 +2,7 @@ import BaseScene from './BaseScene.js';
 import MainMenu from './MainMenu.js';
 import LevelOne from './LevelOne.js';
 
-const gameState = {
-    player: {
-        }
-    
-   }
+
 
  
    const config = {
