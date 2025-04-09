@@ -1,5 +1,6 @@
 import BaseScene from './BaseScene.js';
 import Enemy from './Enemy.js';
+import Player from './Player.js';
 
 export default class LevelOne extends BaseScene {
     constructor() {
@@ -11,31 +12,24 @@ export default class LevelOne extends BaseScene {
     }
 
     create() {
-        // Create player
-        this.player = this.add.sprite(0, 0, 'redHeart');
-        this.player.maxHealth = 3;
-        this.player.health = this.player.maxHealth;
-        this.player.speed = 5;
-        this.player.experience = 0;
-        this.player.attackIsReady = true;
-        this.player.level = 1;
-        this.player.attackDamage = 3;
-        this.waveCount = 1;
-        this.waveCountMax = 5;
+        console.log("LevelOne create");
+        this.baseCreate();
+        this.player.setupPlayer(this, 500, 500);
+
 
         // Create player Container
         this.player.healthBar = this.add.rectangle(this.player.x, this.player.y - 50, this.player.health / this.player.maxHealth * 50, 10, 0x00FF00).setOrigin(0.5);
         this.player.hurtBox = this.add.rectangle(this.player.x, this.player.y, 50, 50, 0x005555).setOrigin(0.5);
         this.playerContainer = this.add.container(this.game.config.width * 0.5, 500, [
             this.player.hurtBox,
-            this.player,
+            this.player.sprite,
             this.player.healthBar,
         ]);
         this.playerContainer.setSize(50, 50);
 
         // Enable physics for player
-        this.physics.world.enable(this.player);
-        this.player.body.setAllowGravity(false);
+        this.physics.world.enable(this.player.sprite);
+        this.player.sprite.body.setAllowGravity(false);
         this.physics.world.enable(this.playerContainer);
         this.playerContainer.body.setCollideWorldBounds(true);
 
