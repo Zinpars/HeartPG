@@ -16,12 +16,12 @@ class LevelOne extends Phaser.Scene {
         gameState.player.experience = 0;
         gameState.player.attackIsReady = true;
         gameState.player.level = 1;
-        gameState.player.attackDamage = 2;
+        gameState.player.attackDamage = 3;
         gameState.waveCount = 1;
+        gameState.waveCountMax = 5;
 
         // Create player Container
-        gameState.player.healthBar = this.add.rectangle(gameState.player.x, gameState.player.y - 50, 50, 10, 0x00FF00).setOrigin(0.5);
-        this.updateHealthBar(gameState.player);
+        gameState.player.healthBar = this.add.rectangle(gameState.player.x, gameState.player.y - 50, gameState.player.health / gameState.player.maxHealth * 50, 10, 0x00FF00).setOrigin(0.5);
         gameState.player.hurtBox = this.add.rectangle(gameState.player.x, gameState.player.y, 50, 50, 0x005555).setOrigin(0.5);
         gameState.playerContainer = this.add.container(game.config.width * 0.5, 500, [
             gameState.player.hurtBox,
@@ -45,12 +45,8 @@ class LevelOne extends Phaser.Scene {
 
         // Create enemyArray
         gameState.enemyArray = [];
-        for (let i = 0; i < 3; i++) {
-            gameState.enemy = new Enemy(this, game.config.width * Math.random(), 100);
-            this.updateHealthBar(gameState.enemy);
-            gameState.enemyArray.push(gameState.enemy);
-        }
-        
+        this.createWave(gameState.waveCount);
+
 
         // Create debugging
         gameState.playerContainerXText = this.add.text(10, 50, 'Player Container X: ' + gameState.playerContainer.x);
@@ -114,7 +110,6 @@ class LevelOne extends Phaser.Scene {
                 this.physics.add.overlap(gameState.meleeHitBox, enemy.sprite, () => {
                     if (!enemy.invulnerable) {
                         enemy.health -= gameState.player.attackDamage;
-                     //   gameState.enemy.healthText.setText('enemy Health: ' + gameState.enemy.health);
                         this.updateHealthBar(enemy);
                         enemy.invulnerable = true;
                     }
@@ -148,10 +143,20 @@ class LevelOne extends Phaser.Scene {
                 gameState.player.experienceText.setText('Player Experience: ' + gameState.player.experience);
             }
         })
-        // Player dies
+        // Game over
         if (gameState.player.health <= 0) {
-            this.scene.restart();
-            // crash when player dies sometimes (maybe when enemy dies at same time)
+ 
+            
+            gameState.gameOverText = this.add.text(200, 200, 'Game Over', { fontSize: '50px', fill: '#FFFFFF' });
+            // TODO remove gameovertext after 2 seconds
+            this.time.addEvent({
+                delay: 2000,
+                callback: () => {
+                    
+                    this.resetVariables();
+                }
+            });
+
         }
         // Level up
         if (gameState.player.experience >= 3) {
@@ -165,11 +170,12 @@ class LevelOne extends Phaser.Scene {
             gameState.waveCount += 1;
             gameState.waveCountText.setText('Wave Count: ' + gameState.waveCount);
             gameState.enemyArray = [];
-            for (let i = 0; i < 3; i++) {
-                gameState.enemy = new Enemy(this, game.config.width * Math.random(), 100);
-                this.updateHealthBar(gameState.enemy);
-                gameState.enemyArray.push(gameState.enemy);
-            }
+            this.createWave(gameState.waveCount);
+        }
+
+        // Victory
+        if (gameState.waveCount > gameState.waveCountMax) {
+            this.add.text(200, 200, 'Victory!', { fontSize: '50px', fill: '#FFFFFF' });
         }
         // Update debugging
         gameState.playerContainerXText.setText('Player Container X: ' + gameState.playerContainer.x);
@@ -180,6 +186,74 @@ class LevelOne extends Phaser.Scene {
     updateHealthBar(sprite) {
         sprite.healthBar.width = sprite.health / sprite.maxHealth * 50;
     }
+
+    createWave(waveCount) {
+        const wavePositions = [
+            // Wave 1 positions
+            [
+                { x: game.config.width * 0.5, y: 100 },
+
+            ],
+            // Wave 2 positions
+            [
+                { x: game.config.width * 0.3, y: 100 },
+                { x: game.config.width * 0.5, y: 100 },
+                { x: game.config.width * 0.7, y: 100 }
+            ],
+            // Wave 3 positions
+            [
+                { x: game.config.width * 0.3, y: 100 },
+                { x: game.config.width * 0.4, y: 100 },
+                { x: game.config.width * 0.5, y: 100 },
+                { x: game.config.width * 0.6, y: 100 },
+                { x: game.config.width * 0.7, y: 100 }
+            ],
+            // Wave 4 positions
+            [
+                { x: game.config.width * 0.3, y: 100 },
+                { x: game.config.width * 0.4, y: 100 },
+                { x: game.config.width * 0.5, y: 100 },
+                { x: game.config.width * 0.6, y: 100 },
+                { x: game.config.width * 0.7, y: 100 },
+                { x: game.config.width * 0.3, y: 200 },
+                { x: game.config.width * 0.8, y: 200 },
+            ],
+            // Wave 5 positions
+            [
+                { x: game.config.width * 0.3, y: 100 },
+                { x: game.config.width * 0.4, y: 100 },
+                { x: game.config.width * 0.5, y: 100 },
+                { x: game.config.width * 0.6, y: 100 },
+                { x: game.config.width * 0.7, y: 100 },
+                { x: game.config.width * 0.3, y: 200 },
+                { x: game.config.width * 0.3, y: 300 },
+                { x: game.config.width * 0.8, y: 200 },
+                { x: game.config.width * 0.8, y: 300 },
+            ]
+        ];
+
+        const positions = wavePositions[waveCount - 1] || wavePositions[0];
+
+        positions.forEach(pos => {
+            gameState.enemy = new Enemy(this, pos.x, pos.y);
+            gameState.enemyArray.push(gameState.enemy);
+        });
+    }
+
+    resetVariables() {
+        gameState.player.health = gameState.player.maxHealth;
+        this.updateHealthBar(gameState.player);
+        gameState.player.attackIsReady = true;
+        gameState.waveCount = 1;
+        gameState.enemyArray.forEach(enemy => {
+            enemy.container.destroy();
+        });
+        gameState.enemyArray = [];
+        this.createWave(gameState.waveCount);
+        gameState.playerContainer.x = game.config.width * 0.5;
+        gameState.playerContainer.y = 500;
+    }
+    // End of Helper functions
 }
 
 
@@ -193,7 +267,7 @@ class Enemy {
 
         // Create enemy sprite and health bar
         this.sprite = scene.add.sprite(0, 0, 'redHeart');
-        this.healthBar = scene.add.rectangle(0, -50, 50, 10, 0x00FF00).setOrigin(0.5);
+        this.healthBar = scene.add.rectangle(0, -50, this.health / this.maxHealth * 50, 10, 0x00FF00).setOrigin(0.5);
 
 
         // Create enemy container
@@ -221,5 +295,5 @@ class Enemy {
         if (gameState.playerContainer.y > this.container.y) {
             this.container.y += this.speed;
         }
-}
+    }
 }
