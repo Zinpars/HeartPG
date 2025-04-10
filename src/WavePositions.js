@@ -1,9 +1,10 @@
 export default class WavePositions {
     constructor(gameWidth) {
+        // TODO: Add enemy type to the arrays
         this.positions = [
             // Wave 1 positions
         [
-            { x: gameWidth * 0.5, y: 100 },
+            { x: gameWidth * 0.5, y: 100 /* , name: "redHeart" */ },
 
         ],
         // Wave 2 positions

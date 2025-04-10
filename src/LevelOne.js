@@ -10,6 +10,7 @@ export default class LevelOne extends BaseScene {
 
     preload() {
         this.load.image('redHeart', './assets/redHeart.png');
+        this.load.image("meteor", "./assets/meteor.png");
     }
 
     create(data) {
@@ -26,9 +27,7 @@ export default class LevelOne extends BaseScene {
         // Create enemyArray
         this.enemyArray = [];
         this.createWave(this.waveCount);
-
-        
-       
+     
         // End of create 
     }
 
@@ -46,71 +45,10 @@ export default class LevelOne extends BaseScene {
         for (let i = 0; i < this.enemyArray.length; i++) {
             this.enemyArray[i].update();
         }
-        // Player gets hit
-        this.enemyArray.forEach(enemy => {
-            this.physics.add.overlap(this.player.sprite, enemy.sprite, () => {
-                if (!this.player.invulnerable) {
-                    this.player.health -= 1;
-                    
-                    this.updateHealthBar(this.player);
-                    this.player.invulnerable = true;
-                    this.time.addEvent({
-                        delay: 1000,
-                        callback: () => {
-                            this.player.invulnerable = false;
-                        }
-                    });
-                }
-            });
-        })
-        // Left click to Attack
-        if (this.input.activePointer.leftButtonDown() && this.player.attackIsReady) {
-            this.player.attackIsReady = false;
+        
+        // Player gets hit     
+        
 
-            // Create hitbox
-            this.meleeHitBox = this.add.rectangle(0, -20, 50, 90, 0x222255).setOrigin(0.5);
-            this.player.playerContainer.add(this.meleeHitBox);
-            this.physics.world.enable(this.meleeHitBox);
-            this.meleeHitBox.body.setAllowGravity(false);
-
-            // Melee hit
-            this.enemyArray.forEach(enemy => {
-                this.physics.add.overlap(this.meleeHitBox, enemy.sprite, () => {
-                    if (!enemy.invulnerable) {
-                        enemy.health -= this.player.attackDamage;
-                        this.updateHealthBar(enemy);
-                        enemy.invulnerable = true;
-                    }
-                });
-            });
-            // Destroy hitbox after delay
-            this.time.addEvent({
-                delay: 200,
-                callback: () => {
-                    this.meleeHitBox.destroy();
-                }
-            });
-            // Cooldown
-            this.time.addEvent({
-                delay: 1000,
-                callback: () => {
-                    this.player.attackIsReady = true;
-                    this.enemyArray.forEach(enemy => {
-                        enemy.invulnerable = false;
-                    });
-                }
-            });
-
-        }
-        // Enemy dies
-        this.enemyArray.forEach(enemy => {
-            if (enemy.health <= 0 && !enemy.isDestroyed) {
-                enemy.isDestroyed = true;
-                enemy.container.destroy();
-                this.player.experience += 1;
-                this.player.experienceText.setText('Player Experience: ' + this.player.experience);
-            }
-        })
         // Game over
         if (this.player.health <= 0) {
             this.player.health = this.player.maxHealth;

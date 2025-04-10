@@ -18,7 +18,7 @@ export default class Player {
 
         // Create player Container
         this.healthBar = this.scene.add.rectangle(this.x, this.y - 50, this.health / this.maxHealth * 50, 10, 0x00FF00).setOrigin(0.5);
-        this.hurtBox = this.scene.add.rectangle(this.x, this.y, 50, 50, 0x005555).setOrigin(0.5);
+        this.hurtBox = this.scene.add.rectangle(this.x, this.y, 50, 50, 0x005555).setOrigin(0.5).setAlpha(0);
         this.playerContainer = this.scene.add.container(this.scene.game.config.width * 0.5, 500, [
             this.hurtBox,
             this.sprite,
