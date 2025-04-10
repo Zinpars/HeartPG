@@ -11,41 +11,23 @@ export default class LevelOne extends BaseScene {
         this.load.image('redHeart', './assets/redHeart.png');
     }
 
-    create() {
+    create(data) {
+        console.log(this.data);
         console.log("LevelOne create");
         this.baseCreate();
-        this.player.setupPlayer(this, 500, 500);
 
-
-        // Create player Container
-        this.player.healthBar = this.add.rectangle(this.player.x, this.player.y - 50, this.player.health / this.player.maxHealth * 50, 10, 0x00FF00).setOrigin(0.5);
-        this.player.hurtBox = this.add.rectangle(this.player.x, this.player.y, 50, 50, 0x005555).setOrigin(0.5);
-        this.playerContainer = this.add.container(this.game.config.width * 0.5, 500, [
-            this.player.hurtBox,
-            this.player.sprite,
-            this.player.healthBar,
-        ]);
-        this.playerContainer.setSize(50, 50);
-
-        // Enable physics for player
-        this.physics.world.enable(this.player.sprite);
-        this.player.sprite.body.setAllowGravity(false);
-        this.physics.world.enable(this.playerContainer);
-        this.playerContainer.body.setCollideWorldBounds(true);
-
-        // Create controls
-        this.cursors = this.input.keyboard.createCursorKeys();
-        this.w = this.input.keyboard.addKey('W');
-        this.a = this.input.keyboard.addKey('A');
-        this.s = this.input.keyboard.addKey('S');
-        this.d = this.input.keyboard.addKey('D');
+        // Create door
+        this.door = this.add.rectangle(this.game.config.width * 0.2, this.game.config.height * 0.8, 50, 50, 0x222222).setOrigin(0.5);
+        this.physics.world.enable(this.door);
+        this.door.body.setAllowGravity(false);
+ 
 
         // Create enemyArray
         this.enemyArray = [];
         this.createWave(this.waveCount);
 
 
-        // Create debugging
+       /*  // Create debugging
         this.playerContainerXText = this.add.text(10, 50, 'Player Container X: ' + this.playerContainer.x);
         this.playerContainerYText = this.add.text(10, 70, 'Player Container Y: ' + this.playerContainer.y);
         this.enemy.healthText = this.add.text(10, 90, 'Enemy Health: ' + this.enemy.health);
@@ -53,31 +35,26 @@ export default class LevelOne extends BaseScene {
         this.player.experienceText = this.add.text(10, 130, 'Player Experience: ' + this.player.experience);
         this.player.levelText = this.add.text(10, 150, 'Player Level: ' + this.player.level);
         this.waveCountText = this.add.text(10, 170, 'Wave Count: ' + this.waveCount);
-        // End of create
+        // End of create */
     }
 
     update() {
+        // Player movement
+        this.player.movement();
 
-        // Movement
-        if (this.cursors.left.isDown || this.a.isDown) {
-            this.playerContainer.x -= this.player.speed;
+        // Enter Door
+        if (this.physics.overlap(this.player.sprite, this.door)) {
+            this.scene.start('LevelTwo');
         }
-        if (this.cursors.right.isDown || this.d.isDown) {
-            this.playerContainer.x += this.player.speed;
-        }
-        if (this.cursors.up.isDown || this.w.isDown) {
-            this.playerContainer.y -= this.player.speed;
-        }
-        if (this.cursors.down.isDown || this.s.isDown) {
-            this.playerContainer.y += this.player.speed;
-        }
+
+        
         // Enemy movement
         for (let i = 0; i < this.enemyArray.length; i++) {
             this.enemyArray[i].update();
         }
         // Player gets hit
         this.enemyArray.forEach(enemy => {
-            this.physics.add.overlap(this.player, enemy.sprite, () => {
+            this.physics.add.overlap(this.player.sprite, enemy.sprite, () => {
                 if (!this.player.invulnerable) {
                     this.player.health -= 1;
                     this.player.healthText.setText('Player Health: ' + this.player.health);
@@ -98,7 +75,7 @@ export default class LevelOne extends BaseScene {
 
             // Create hitbox
             this.meleeHitBox = this.add.rectangle(0, -20, 50, 90, 0x222255).setOrigin(0.5);
-            this.playerContainer.add(this.meleeHitBox);
+            this.player.playerContainer.add(this.meleeHitBox);
             this.physics.world.enable(this.meleeHitBox);
             this.meleeHitBox.body.setAllowGravity(false);
 
@@ -174,9 +151,9 @@ export default class LevelOne extends BaseScene {
         if (this.waveCount > this.waveCountMax) {
             this.add.text(200, 200, 'Victory!', { fontSize: '50px', fill: '#FFFFFF' });
         }
-        // Update debugging
+        /* // Update debugging
         this.playerContainerXText.setText('Player Container X: ' + this.playerContainer.x);
-        this.playerContainerYText.setText('Player Container Y: ' + this.playerContainer.y);
+        this.playerContainerYText.setText('Player Container Y: ' + this.playerContainer.y); */
         // End of update    
     }
     // Helper functions
@@ -232,7 +209,7 @@ export default class LevelOne extends BaseScene {
         const positions = wavePositions[waveCount - 1] || wavePositions[0];
 
         positions.forEach(pos => {
-            this.enemy = new Enemy(this, pos.x, pos.y, this.playerContainer);
+            this.enemy = new Enemy(this, pos.x, pos.y, this.player.playerContainer);
             this.enemyArray.push(this.enemy);
         });
     }

@@ -1,6 +1,7 @@
 import BaseScene from './BaseScene.js';
 import MainMenu from './MainMenu.js';
 import LevelOne from './LevelOne.js';
+import LevelTwo from './LevelTwo.js';
 
 
 
@@ -17,7 +18,7 @@ import LevelOne from './LevelOne.js';
             debug: true
         }
     },
-    scene: [MainMenu, LevelOne, BaseScene]
+    scene: [MainMenu, LevelOne, LevelTwo, BaseScene]
 };
    
    const game = new Phaser.Game(config);

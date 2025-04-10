@@ -4,7 +4,6 @@ export default class BaseScene extends Phaser.Scene {
     constructor(key) {
         super({ key })
         this.scene = key;
-        console.log("BaseScene constructor", key);
     }
 
     create() {
@@ -13,10 +12,8 @@ export default class BaseScene extends Phaser.Scene {
 
     baseCreate() {
         console.log("BaseScene baseCreate");
-        if (!this.player) {
-            this.player = new Player(this, 0, 0);
-            console.log("New Player created in BaseScene");
-        }
+        this.player = new Player(this, 0, 0);
+        this.player.setupPlayer(this, 500, 500);
 
     }
 
