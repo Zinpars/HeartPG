@@ -14,6 +14,6 @@ export default class LevelTwo extends BaseScene {
     }
 
     update() {
-        this.player.movement();
+        super.update();
     }
 }

@@ -1,11 +1,11 @@
 export default class Player {
     constructor(scene, x, y) {
-        console.log("Player constructor");
         this.scene = scene;
         this.x = x;
         this.y = y;
         
         // Create player
+        this.name = "Player";
         this.sprite = this.scene.add.sprite(0, 0, 'redHeart');
         this.maxHealth = 3;
         this.health = this.maxHealth;
@@ -14,8 +14,7 @@ export default class Player {
         this.attackIsReady = true;
         this.level = 1;
         this.attackDamage = 3;
-        this.waveCount = 1;
-        this.waveCountMax = 5;
+        
 
         // Create player Container
         this.healthBar = this.scene.add.rectangle(this.x, this.y - 50, this.health / this.maxHealth * 50, 10, 0x00FF00).setOrigin(0.5);
@@ -60,4 +59,6 @@ export default class Player {
             this.playerContainer.y += this.speed;
         }
     }
+
+    
 }

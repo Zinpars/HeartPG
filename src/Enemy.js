@@ -1,7 +1,8 @@
 export default class Enemy {
     constructor(scene, x, y, playerContainer) {
         this.scene = scene;
-        this.maxHealth = 3;
+        this.name = "Enemy";
+        this.maxHealth = 5;
         this.health = this.maxHealth;
         this.speed = 2;
         this.isDestroyed = false;

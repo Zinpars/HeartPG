@@ -13,8 +13,8 @@ export default class LevelOne extends BaseScene {
 
     create(data) {
         console.log(this.data);
-        console.log("LevelOne create");
         this.baseCreate();
+        this.waveCountMax = 5;
 
         // Create door
         this.door = this.add.rectangle(this.game.config.width * 0.2, this.game.config.height * 0.8, 50, 50, 0x222222).setOrigin(0.5);
@@ -26,21 +26,14 @@ export default class LevelOne extends BaseScene {
         this.enemyArray = [];
         this.createWave(this.waveCount);
 
-
-       /*  // Create debugging
-        this.playerContainerXText = this.add.text(10, 50, 'Player Container X: ' + this.playerContainer.x);
-        this.playerContainerYText = this.add.text(10, 70, 'Player Container Y: ' + this.playerContainer.y);
-        this.enemy.healthText = this.add.text(10, 90, 'Enemy Health: ' + this.enemy.health);
-        this.player.healthText = this.add.text(10, 110, 'Player Health: ' + this.player.health);
-        this.player.experienceText = this.add.text(10, 130, 'Player Experience: ' + this.player.experience);
-        this.player.levelText = this.add.text(10, 150, 'Player Level: ' + this.player.level);
-        this.waveCountText = this.add.text(10, 170, 'Wave Count: ' + this.waveCount);
-        // End of create */
+        
+       
+        // End of create 
     }
 
     update() {
-        // Player movement
-        this.player.movement();
+        super.update();
+        
 
         // Enter Door
         if (this.physics.overlap(this.player.sprite, this.door)) {
@@ -57,7 +50,7 @@ export default class LevelOne extends BaseScene {
             this.physics.add.overlap(this.player.sprite, enemy.sprite, () => {
                 if (!this.player.invulnerable) {
                     this.player.health -= 1;
-                    this.player.healthText.setText('Player Health: ' + this.player.health);
+                    
                     this.updateHealthBar(this.player);
                     this.player.invulnerable = true;
                     this.time.addEvent({
@@ -119,10 +112,10 @@ export default class LevelOne extends BaseScene {
         })
         // Game over
         if (this.player.health <= 0) {
- 
+            this.player.health = this.player.maxHealth;
             
             this.gameOverText = this.add.text(200, 200, 'Game Over', { fontSize: '50px', fill: '#FFFFFF' });
-            // TODO remove gameovertext after 2 seconds
+            // TODO prevent player movement and attacks
             this.time.addEvent({
                 delay: 2000,
                 callback: () => {
@@ -151,15 +144,11 @@ export default class LevelOne extends BaseScene {
         if (this.waveCount > this.waveCountMax) {
             this.add.text(200, 200, 'Victory!', { fontSize: '50px', fill: '#FFFFFF' });
         }
-        /* // Update debugging
-        this.playerContainerXText.setText('Player Container X: ' + this.playerContainer.x);
-        this.playerContainerYText.setText('Player Container Y: ' + this.playerContainer.y); */
+        
         // End of update    
     }
     // Helper functions
-    updateHealthBar(sprite) {
-        sprite.healthBar.width = sprite.health / sprite.maxHealth * 50;
-    }
+    
 
     createWave(waveCount) {
         const wavePositions = [
@@ -215,6 +204,8 @@ export default class LevelOne extends BaseScene {
     }
 
     resetVariables() {
+        this.gameOverText.destroy();
+        this.meleeHitBox.destroy();
         this.player.health = this.player.maxHealth;
         this.updateHealthBar(this.player);
         this.player.attackIsReady = true;
@@ -224,8 +215,8 @@ export default class LevelOne extends BaseScene {
         });
         this.enemyArray = [];
         this.createWave(this.waveCount);
-        this.playerContainer.x = this.game.config.width * 0.5;
-        this.playerContainer.y = 500;
+        this.player.playerContainer.x = this.game.config.width * 0.5;
+        this.player.playerContainer.y = 500;
     }
     // End of Helper functions
 }
