@@ -1,6 +1,7 @@
 import BaseScene from './BaseScene.js';
 import Enemy from './Enemy.js';
 import Player from './Player.js';
+import WavePositions from './WavePositions.js';
 
 export default class LevelOne extends BaseScene {
     constructor() {
@@ -120,7 +121,7 @@ export default class LevelOne extends BaseScene {
                 delay: 2000,
                 callback: () => {
                     
-                    this.resetVariables();
+                    this.scene.restart();
                 }
             });
 
@@ -150,60 +151,9 @@ export default class LevelOne extends BaseScene {
     // Helper functions
     
 
-    createWave(waveCount) {
-        const wavePositions = [
-            // Wave 1 positions
-            [
-                { x: this.game.config.width * 0.5, y: 100 },
+    
 
-            ],
-            // Wave 2 positions
-            [
-                { x: this.game.config.width * 0.3, y: 100 },
-                { x: this.game.config.width * 0.5, y: 100 },
-                { x: this.game.config.width * 0.7, y: 100 }
-            ],
-            // Wave 3 positions
-            [
-                { x: this.game.config.width * 0.3, y: 100 },
-                { x: this.game.config.width * 0.4, y: 100 },
-                { x: this.game.config.width * 0.5, y: 100 },
-                { x: this.game.config.width * 0.6, y: 100 },
-                { x: this.game.config.width * 0.7, y: 100 }
-            ],
-            // Wave 4 positions
-            [
-                { x: this.game.config.width * 0.3, y: 100 },
-                { x: this.game.config.width * 0.4, y: 100 },
-                { x: this.game.config.width * 0.5, y: 100 },
-                { x: this.game.config.width * 0.6, y: 100 },
-                { x: this.game.config.width * 0.7, y: 100 },
-                { x: this.game.config.width * 0.3, y: 200 },
-                { x: this.game.config.width * 0.8, y: 200 },
-            ],
-            // Wave 5 positions
-            [
-                { x: this.game.config.width * 0.3, y: 100 },
-                { x: this.game.config.width * 0.4, y: 100 },
-                { x: this.game.config.width * 0.5, y: 100 },
-                { x: this.game.config.width * 0.6, y: 100 },
-                { x: this.game.config.width * 0.7, y: 100 },
-                { x: this.game.config.width * 0.3, y: 200 },
-                { x: this.game.config.width * 0.3, y: 300 },
-                { x: this.game.config.width * 0.8, y: 200 },
-                { x: this.game.config.width * 0.8, y: 300 },
-            ]
-        ];
-
-        const positions = wavePositions[waveCount - 1] || wavePositions[0];
-
-        positions.forEach(pos => {
-            this.enemy = new Enemy(this, pos.x, pos.y, this.player.playerContainer);
-            this.enemyArray.push(this.enemy);
-        });
-    }
-
-    resetVariables() {
+    /* resetVariables() {
         this.gameOverText.destroy();
         this.meleeHitBox.destroy();
         this.player.health = this.player.maxHealth;
@@ -217,7 +167,7 @@ export default class LevelOne extends BaseScene {
         this.createWave(this.waveCount);
         this.player.playerContainer.x = this.game.config.width * 0.5;
         this.player.playerContainer.y = 500;
-    }
+    } */
     // End of Helper functions
 }
 

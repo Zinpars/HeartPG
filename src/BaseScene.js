@@ -1,6 +1,7 @@
 import Player from "./Player.js"
 import Enemy from "./Enemy.js"
 import Debugging from "./Debugging.js";
+import WavePositions from "./WavePositions.js";
 
 export default class BaseScene extends Phaser.Scene {
     constructor(key) {
@@ -36,6 +37,18 @@ export default class BaseScene extends Phaser.Scene {
         console.log(sprite);
         sprite.healthBar.width = sprite.health / sprite.maxHealth * 50;
        // sprite.healthText.setText(sprite.name + ' Health: ' + sprite.health);
+    }
+
+    createWave(waveCount) {
+        // Get positions for enemies from WavePositions
+        const wavePositions = new WavePositions(this.game.config.width)
+        const positions = wavePositions.getPositions(waveCount);
+
+        // Create enemies
+        positions.forEach(pos => {
+            this.enemy = new Enemy(this, pos.x, pos.y, this.player.playerContainer);
+            this.enemyArray.push(this.enemy);
+        });
     }
 
 
