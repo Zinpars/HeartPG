@@ -23,7 +23,9 @@ export default class BaseScene extends Phaser.Scene {
 
         this.skillBar = new SkillBar(this, this.player);
         this.skills = new Skills(this, this.player, this.skillBar);
-        this.skillBar.createSkillBar(this.skills);
+        for (let i = 0; i < this.skills.skillArray.length; i++) {
+            this.skillBar.createCooldownBar(this.skills.skillArray[i], i + 1)
+        }
 
         // Press 1 to cast meteor
         this.input.keyboard.on("keydown-ONE", () => {

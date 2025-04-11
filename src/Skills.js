@@ -8,12 +8,17 @@ export default class Skills {
 
         this.meteor = {};
         this.meteor.isReady = true;
+        this.meteor.name = "meteor";
 
         this.fireball = {};
         this.fireball.isReady = true;
+        this.fireball.name = "fireball";
 
         this.fireAura = {};
         this.fireAura.isReady = true;
+        this.fireAura.name = "fireAura";
+
+        this.skillArray = [this.meteor, this.fireball, this.fireAura];
     }
 
     castMeteor() {
@@ -31,7 +36,7 @@ export default class Skills {
             this.meteor.cooldown = 5000;
             this.meteor.damage = 6;
 
-            this.skillBar.meteorCooldown(this.meteor);
+            this.skillBar.startCooldown(this.meteor);
 
 
             // Destroy meteor after delay
@@ -59,7 +64,7 @@ export default class Skills {
             this.fireball.damage = 3;
 
             //Start cooldown bar
-            this.skillBar.fireballCooldown(this.fireball);
+            this.skillBar.startCooldown(this.fireball);
 
             // Calculate direction vector to the pointer
             const pointer = this.scene.input.activePointer;
@@ -101,7 +106,7 @@ export default class Skills {
             this.fireAura.duration = 5000; // Duration of the fire aura effect
 
             // Start cooldown bar
-            this.skillBar.fireAuraCooldown(this.fireAura);
+            this.skillBar.startCooldown(this.fireAura);
 
             // Make the aura follow the player
             this.player.playerContainer.add(this.fireAura.sprite);
