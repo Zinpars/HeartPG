@@ -3,6 +3,7 @@ import Enemy from "./Enemy.js"
 import Debugging from "./Debugging.js";
 import WavePositions from "./WavePositions.js";
 import Skills from "./Skills.js";
+import SkillBar from "./SkillBar.js";
 
 export default class BaseScene extends Phaser.Scene {
     constructor(key) {
@@ -20,18 +21,27 @@ export default class BaseScene extends Phaser.Scene {
         this.waveCount = 1;
         this.enemyArray = [];
 
-        this.skills = new Skills(this, this.player);
-
+        this.skillBar = new SkillBar(this, this.player);
+        this.skills = new Skills(this, this.player, this.skillBar);
+        this.skillBar.createSkillBar(this.skills);
 
         // Press 1 to cast meteor
         this.input.keyboard.on("keydown-ONE", () => {
             this.skills.castMeteor();
+            this.enemyGotHit(this.skills.meteor.damage, this.skills.meteor.sprite);
         })
 
+        // Press 2 to cast fireball
+        this.input.keyboard.on("keydown-TWO", () => {
+            this.skills.castFireball();
+            this.enemyGotHit(this.skills.fireball.damage, this.skills.fireball.sprite);
+        })
 
-
-
-
+        // Press 3 to cast fire aura
+        this.input.keyboard.on("keydown-THREE", () => {
+            this.skills.castFireAura();
+            this.enemyGotHit(this.skills.fireAura.damage, this.skills.fireAura.sprite);
+        })
     }
 
     update() {
@@ -44,23 +54,6 @@ export default class BaseScene extends Phaser.Scene {
         // Player attack
         if (this.input.activePointer.leftButtonDown() && this.player.attackIsReady) {
             this.playerAttack();
-        }
-
-        this.playerGotHit();
-        this.handleEnemyDeaths();
-
-        // Overlap meteor enemy
-        if (this.skills.meteor) {
-            this.enemyArray.forEach(enemy => {
-                this.physics.add.overlap(this.skills.meteor, enemy.sprite, () => {
-                    if (!enemy.invulnerable) {
-                        enemy.health -= this.skills.meteor.damage;
-                        this.updateHealthBar(enemy);
-                        enemy.invulnerable = true;
-                        enemy.sprite.setTint(0x0000ff);
-                    }
-                });
-            })
         }
     }
 
@@ -80,20 +73,33 @@ export default class BaseScene extends Phaser.Scene {
             this.enemy = new Enemy(this, pos.x, pos.y, this.player.playerContainer);
             this.enemyArray.push(this.enemy);
         });
+
+        // Reapply overlap for each attack/skill
+        this.playerGotHit();
+        if (this.meleeHitBox) {
+            this.enemyGotHit(this.player.attackDamage, this.meleeHitBox);
+        }
+         if (this.skills.meteor.sprite) {
+            this.enemyGotHit(this.skills.meteor.damage, this.skills.meteor.sprite);
+        }
+       if (this.skills.fireball.sprite) {
+            this.enemyGotHit(this.skills.fireball.damage, this.skills.fireball.sprite);
+        }
+        if (this.skills.fireAura.sprite) {
+            this.enemyGotHit(this.skills.fireAura.damage, this.skills.fireAura.sprite);
+        }
     }
 
-    handleEnemyDeaths() {
-        // Enemy dies
-        this.enemyArray.forEach(enemy => {
+    handleEnemyDeaths(enemy) {
             if (enemy.health <= 0 && !enemy.isDestroyed) {
                 enemy.isDestroyed = true;
                 enemy.container.destroy();
+
+                // Grant experience TODO: experience variable
                 this.player.experience += 1;
                 this.player.experienceText.setText('Player Experience: ' + this.player.experience);
             }
-        })
     }
-
 
     playerGotHit() {
         this.enemyArray.forEach(enemy => {
@@ -115,8 +121,6 @@ export default class BaseScene extends Phaser.Scene {
                 }
             });
         })
-
-
     }
 
     playerAttack() {
@@ -129,17 +133,8 @@ export default class BaseScene extends Phaser.Scene {
         this.physics.world.enable(this.meleeHitBox);
         this.meleeHitBox.body.setAllowGravity(false);
 
-        // Melee hit
-        this.enemyArray.forEach(enemy => {
-            this.physics.add.overlap(this.meleeHitBox, enemy.sprite, () => {
-                if (!enemy.invulnerable) {
-                    enemy.health -= this.player.attackDamage;
-                    this.updateHealthBar(enemy);
-                    enemy.invulnerable = true;
-                    enemy.sprite.setTint(0x0000ff);
-                }
-            });
-        });
+        this.enemyGotHit(this.player.attackDamage, this.meleeHitBox);
+
         // Destroy hitbox after delay
         this.time.addEvent({
             delay: 200,
@@ -152,11 +147,23 @@ export default class BaseScene extends Phaser.Scene {
             delay: 1000,
             callback: () => {
                 this.player.attackIsReady = true;
-                this.enemyArray.forEach(enemy => {
-                    enemy.invulnerable = false;
-                    enemy.sprite.clearTint();
-                });
             }
+        });
+
+    }
+
+    enemyGotHit(damage, hitbox) {
+        this.enemyArray.forEach(enemy => {
+            const overlap = this.physics.add.overlap(hitbox, enemy.sprite, () => {
+                if (!enemy.invulnerable) {
+                    enemy.health -= damage;
+                    this.updateHealthBar(enemy);
+                    this.handleEnemyDeaths(enemy)
+                    if (hitbox !== this.skills.fireAura.sprite) {
+                        overlap.destroy();
+                    }
+                }
+            });
         });
 
     }

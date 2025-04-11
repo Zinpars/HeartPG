@@ -11,6 +11,8 @@ export default class LevelOne extends BaseScene {
     preload() {
         this.load.image('redHeart', './assets/redHeart.png');
         this.load.image("meteor", "./assets/meteor.png");
+        this.load.image("fireball", "./assets/fireball.png");
+        this.load.image("fireAura", "./assets/fireAura.png");
     }
 
     create(data) {
