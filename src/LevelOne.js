@@ -28,7 +28,7 @@ export default class LevelOne extends BaseScene {
 
         // Create enemyArray
         this.enemyArray = [];
-        this.createWave(this.waveCount);
+        this.createWave(this.waveCount, "one");
      
         // End of create 
     }
@@ -78,7 +78,7 @@ export default class LevelOne extends BaseScene {
             this.waveCount += 1;
             this.waveCountText.setText('Wave Count: ' + this.waveCount);
             this.enemyArray = [];
-            this.createWave(this.waveCount);
+            this.createWave(this.waveCount, "one");
         }
 
         // Victory

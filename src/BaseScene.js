@@ -65,10 +65,10 @@ export default class BaseScene extends Phaser.Scene {
         this.player.healthText.setText('Player Health: ' + this.player.health);
     }
 
-    createWave(waveCount) {
+    createWave(waveCount, level) {
         // Get positions for enemies from WavePositions
         const wavePositions = new WavePositions(this.game.config.width)
-        const positions = wavePositions.getPositions(waveCount);
+        const positions = wavePositions.getPositions(waveCount, level);
 
         // Create enemies
         positions.forEach(pos => {
