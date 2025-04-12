@@ -1,7 +1,6 @@
 import BaseScene from './BaseScene.js';
 import Enemy from './Enemy.js';
 import Player from './Player.js';
-import WavePositions from './WavePositions.js';
 
 export default class LevelOne extends BaseScene {
     constructor() {
@@ -10,9 +9,12 @@ export default class LevelOne extends BaseScene {
 
     preload() {
         this.load.image('redHeart', './assets/redHeart.png');
+        this.load.image("whiteHeart", "./assets/whiteHeart.png");
         this.load.image("meteor", "./assets/meteor.png");
         this.load.image("fireball", "./assets/fireball.png");
         this.load.image("fireAura", "./assets/fireAura.png");
+        this.load.image("player", "./assets/player.png");
+        this.load.image("levelup", "./assets/levelup.png");
     }
 
     create(data) {
@@ -24,55 +26,25 @@ export default class LevelOne extends BaseScene {
         this.door = this.add.rectangle(this.game.config.width * 0.2, this.game.config.height * 0.8, 50, 50, 0x222222).setOrigin(0.5);
         this.physics.world.enable(this.door);
         this.door.body.setAllowGravity(false);
- 
+
 
         // Create enemyArray
         this.enemyArray = [];
         this.createWave(this.waveCount, "one");
-     
+
         // End of create 
     }
 
     update() {
         super.update();
-        
 
-        // Enter Door
+
+       /*  // Enter Door
         if (this.physics.overlap(this.player.sprite, this.door)) {
             this.scene.start('LevelTwo');
-        }
+        } */
 
         
-        // Enemy movement
-        for (let i = 0; i < this.enemyArray.length; i++) {
-            this.enemyArray[i].update();
-        }
-        
-        // Player gets hit     
-        
-
-        // Game over
-        if (this.player.health <= 0) {
-            this.player.health = this.player.maxHealth;
-            
-            this.gameOverText = this.add.text(200, 200, 'Game Over', { fontSize: '50px', fill: '#FFFFFF' });
-            // TODO prevent player movement and attacks
-            this.time.addEvent({
-                delay: 2000,
-                callback: () => {
-                    
-                    this.scene.restart();
-                }
-            });
-
-        }
-        // Level up
-        if (this.player.experience >= 3) {
-            this.player.experience = 0;
-            this.player.experienceText.setText('Player Experience: ' + this.player.experience);
-            this.player.level += 1;
-            this.player.levelText.setText('Player Level: ' + this.player.level);
-        }
         // Wave count
         if (this.enemyArray.every(enemy => enemy.isDestroyed)) {
             this.waveCount += 1;
@@ -83,31 +55,13 @@ export default class LevelOne extends BaseScene {
 
         // Victory
         if (this.waveCount > this.waveCountMax) {
-            this.add.text(200, 200, 'Victory!', { fontSize: '50px', fill: '#FFFFFF' });
+            this.add.text(this.game.config.width / 2, this.game.config.height / 2, 'Victory!', { fontSize: '50px', fill: '#FFFFFF' }).setOrigin(0.5);
         }
-        
+
         // End of update    
     }
     // Helper functions
-    
 
-    
-
-    /* resetVariables() {
-        this.gameOverText.destroy();
-        this.meleeHitBox.destroy();
-        this.player.health = this.player.maxHealth;
-        this.updateHealthBar(this.player);
-        this.player.attackIsReady = true;
-        this.waveCount = 1;
-        this.enemyArray.forEach(enemy => {
-            enemy.container.destroy();
-        });
-        this.enemyArray = [];
-        this.createWave(this.waveCount);
-        this.player.playerContainer.x = this.game.config.width * 0.5;
-        this.player.playerContainer.y = 500;
-    } */
     // End of Helper functions
 }
 

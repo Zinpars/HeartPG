@@ -1,27 +1,15 @@
+import EnemyTypes from "./EnemyTypes.js";
+
 export default class Enemy {
-    constructor(scene, x, y, playerContainer) {
+    constructor(scene, x, y, type = "redHeart", playerContainer) {
         this.scene = scene;
-        this.name = "Enemy";
-        this.maxHealth = 5;
-        this.health = this.maxHealth;
-        this.speed = 2;
+     //   this.name = "Enemy";
         this.isDestroyed = false;
         this.playerContainer = playerContainer;
 
-        // Create enemy sprite and health bar
-        this.sprite = scene.add.sprite(0, 0, 'redHeart');
-        this.healthBar = scene.add.rectangle(0, -50, this.health / this.maxHealth * 50, 10, 0x00FF00).setOrigin(0.5);
+        this.enemyTypes = new EnemyTypes();
 
-
-        // Create enemy container
-        this.container = scene.add.container(x, y, [
-            this.sprite,
-            this.healthBar
-        ]);
-
-        // Enable physics for enemy
-        scene.physics.world.enable(this.sprite);
-        this.sprite.body.setAllowGravity(false);
+        this.createEnemy(x, y, type, scene);    
     }
 
     update() {
@@ -38,5 +26,30 @@ export default class Enemy {
         if (this.playerContainer.y > this.container.y) {
             this.container.y += this.speed;
         }
+    }
+
+    createEnemy(x, y, type, scene) {
+        // Create enemy sprite and health bar
+        const enemyType = this.enemyTypes.types[type];
+        this.sprite = scene.add.sprite(0, 0, "whiteHeart").setOrigin(0.5);
+        this.sprite.setTint(enemyType.tint);
+        this.sprite.setScale(enemyType.scale || 1);
+        
+        this.speed = enemyType.speed || 2;
+        this.maxHealth = enemyType.maxHealth || 5;
+        this.health = this.maxHealth;
+        this.healthBar = scene.add.rectangle(0, -50, this.health / this.maxHealth * 50, 10, 0x00FF00).setOrigin(0.5);
+        this.damage = enemyType.damage || 1;
+
+        // Enable physics for enemy
+        scene.physics.world.enable(this.sprite);
+        this.sprite.body.setAllowGravity(false);
+        this.sprite.body.setSize(this.sprite.width / 2, this.sprite.height / 2);
+
+        // Create enemy container
+        this.container = scene.add.container(x, y, [
+            this.sprite,
+            this.healthBar
+        ]);
     }
 }

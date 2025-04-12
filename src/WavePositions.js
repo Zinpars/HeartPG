@@ -1,25 +1,24 @@
 export default class WavePositions {
     constructor(gameWidth) {
         this.positions = {};
-        // TODO: Add enemy type to the arrays
         this.positions.one = [
             // Wave 1 positions
             [
-                { x: gameWidth * 0.5, y: 100 /* , name: "redHeart" */ },
+                { x: gameWidth * 0.5, y: 100 },
 
             ],
             // Wave 2 positions
             [
                 { x: gameWidth * 0.3, y: 100 },
-                { x: gameWidth * 0.5, y: 100 },
+                { x: gameWidth * 0.5, y: 100, type: "orangeHeart" },
                 { x: gameWidth * 0.7, y: 100 }
             ],
             // Wave 3 positions
             [
                 { x: gameWidth * 0.3, y: 100 },
-                { x: gameWidth * 0.4, y: 100 },
-                { x: gameWidth * 0.5, y: 100 },
-                { x: gameWidth * 0.6, y: 100 },
+                { x: gameWidth * 0.4, y: 100, type: "orangeHeart" },
+                { x: gameWidth * 0.5, y: 100, type: "yellowHeart" },
+                { x: gameWidth * 0.6, y: 100, type: "orangeHeart" },
                 { x: gameWidth * 0.7, y: 100 }
             ],
             // Wave 4 positions
@@ -36,7 +35,7 @@ export default class WavePositions {
             [
                 { x: gameWidth * 0.3, y: 100 },
                 { x: gameWidth * 0.4, y: 100 },
-                { x: gameWidth * 0.5, y: 100 },
+                { x: gameWidth * 0.5, y: 100, type: "heartBoss" },
                 { x: gameWidth * 0.6, y: 100 },
                 { x: gameWidth * 0.7, y: 100 },
                 { x: gameWidth * 0.3, y: 200 },

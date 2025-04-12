@@ -9,16 +9,32 @@ export default class Skills {
         this.meteor = {};
         this.meteor.isReady = true;
         this.meteor.name = "meteor";
+        this.meteor.cooldown = 5000;
+        this.meteor.damage = 6;
+        this.meteor.description = `Summon a meteor at the mouse position that deals ${this.meteor.damage} damage to enemies in a small area.`
+
 
         this.fireball = {};
         this.fireball.isReady = true;
         this.fireball.name = "fireball";
+        this.fireball.cooldown = 3000;
+        this.fireball.damage = 3;
+        this.fireball.description = `Launch a fireball at the mouse position that deals ${this.fireball.damage} damage to enemies.`
 
         this.fireAura = {};
         this.fireAura.isReady = true;
         this.fireAura.name = "fireAura";
+        this.fireAura.cooldown = 10000;
+        this.fireAura.damage = 0.5;
+        this.fireAura.duration = 5000;
+        this.fireAura.description = `Create a fire aura around the player that deals ${this.fireAura.damage} damage per second to enemies in the area.`
 
         this.skillArray = [this.meteor, this.fireball, this.fireAura];
+    }
+
+    castSkill(skillName, player) {
+        if (player.isInCutscene) return;
+        this[skillName]();
     }
 
     castMeteor() {
@@ -33,11 +49,7 @@ export default class Skills {
             this.meteor.sprite.body.setAllowGravity(false);
             this.meteor.sprite.body.setSize(this.meteor.sprite.width / 2, this.meteor.sprite.height / 2);
 
-            this.meteor.cooldown = 5000;
-            this.meteor.damage = 6;
-
             this.skillBar.startCooldown(this.meteor);
-
 
             // Destroy meteor after delay
             this.scene.time.addEvent({
@@ -58,10 +70,6 @@ export default class Skills {
             this.scene.physics.world.enable(this.fireball.sprite);
             this.fireball.sprite.body.setAllowGravity(false);
             this.fireball.sprite.body.setSize(this.fireball.sprite.width / 2, this.fireball.sprite.height / 2);
-
-            // Set fireball properties
-            this.fireball.cooldown = 3000;
-            this.fireball.damage = 3;
 
             //Start cooldown bar
             this.skillBar.startCooldown(this.fireball);
@@ -99,11 +107,6 @@ export default class Skills {
             this.scene.physics.world.enable(this.fireAura.sprite);
             this.fireAura.sprite.body.setAllowGravity(false);
             this.fireAura.sprite.body.setSize(this.fireAura.sprite.width / 2, this.fireAura.sprite.height / 2);
-
-            // Set fire aura properties
-            this.fireAura.cooldown = 10000;
-            this.fireAura.damage = 0.5;
-            this.fireAura.duration = 5000; // Duration of the fire aura effect
 
             // Start cooldown bar
             this.skillBar.startCooldown(this.fireAura);
