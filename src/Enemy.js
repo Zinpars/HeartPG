@@ -7,8 +7,6 @@ export default class Enemy {
         this.isDestroyed = false;
         this.playerContainer = playerContainer;
 
-        this.enemyTypes = new EnemyTypes();
-
         this.createEnemy(x, y, type, scene);    
     }
 
@@ -30,7 +28,7 @@ export default class Enemy {
 
     createEnemy(x, y, type, scene) {
         // Create enemy sprite and health bar
-        const enemyType = this.enemyTypes.types[type];
+        const enemyType = EnemyTypes[type];
         this.sprite = scene.add.sprite(0, 0, "whiteHeart").setOrigin(0.5);
         this.sprite.setTint(enemyType.tint);
         this.sprite.setScale(enemyType.scale || 1);

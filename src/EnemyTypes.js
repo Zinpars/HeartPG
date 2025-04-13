@@ -1,6 +1,4 @@
-export default class EnemyTypes {
-    constructor() {
-        this.types = {
+const EnemyTypes = Object.freeze({
             redHeart: {
                 name: "Red Heart",
                 maxHealth: 5,
@@ -38,6 +36,6 @@ export default class EnemyTypes {
                 tint: 0xFF00FF,
                 scale: 4
             },
-        };       
-    }
-}
+})      
+    
+export default EnemyTypes;
