@@ -1,4 +1,4 @@
-import BaseScene from './BaseScene.js';
+/* import BaseScene from './BaseScene.js';
 import Enemy from './Enemy.js';
 import Player from './Player.js';
 
@@ -7,15 +7,7 @@ export default class LevelOne extends BaseScene {
         super('LevelOne');
     }
 
-    preload() {
-        this.load.image('redHeart', './assets/redHeart.png');
-        this.load.image("whiteHeart", "./assets/whiteHeart.png");
-        this.load.image("meteor", "./assets/meteor.png");
-        this.load.image("fireball", "./assets/fireball.png");
-        this.load.image("fireAura", "./assets/fireAura.png");
-        this.load.image("player", "./assets/player.png");
-        this.load.image("levelup", "./assets/levelup.png");
-    }
+    
 
     create(data) {
         this.baseCreate(data);
@@ -44,17 +36,13 @@ export default class LevelOne extends BaseScene {
             if (this.playerContainer) {
                 this.playerContainer.destroy();
             }
-            console.log(this.playerContainer)
             this.scene.start('LevelTwo', { player: this.player });           
         }
 
         
         
 
-        // Victory
-        if (this.enemyArray.every(enemy => enemy.isDestroyed) && this.waveCount >= this.waveCountMax) {
-            this.add.text(this.game.config.width / 2, this.game.config.height / 2, 'Victory!', { fontSize: '50px', fill: '#FFFFFF' }).setOrigin(0.5);
-        }
+        
 
         // End of update    
     }
@@ -66,3 +54,4 @@ export default class LevelOne extends BaseScene {
 
 
 
+ */

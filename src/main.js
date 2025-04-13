@@ -1,7 +1,6 @@
 import BaseScene from './BaseScene.js';
 import MainMenu from './MainMenu.js';
-import LevelOne from './LevelOne.js';
-import LevelTwo from './LevelTwo.js';
+import LevelSelect from './LevelSelect.js';
 
 
 
@@ -23,7 +22,7 @@ import LevelTwo from './LevelTwo.js';
         mode: Phaser.Scale.FIT, // Scale the game to fit the screen
         autoCenter: Phaser.Scale.CENTER_BOTH // Center the game on the screen
     },
-    scene: [MainMenu, LevelOne, LevelTwo, BaseScene]
+    scene: [MainMenu, LevelSelect, BaseScene]
 };
    
    const game = new Phaser.Game(config);

@@ -1,4 +1,4 @@
-import BaseScene from './BaseScene.js';
+/* import BaseScene from './BaseScene.js';
 import Enemy from './Enemy.js';
 import Player from './Player.js';
 
@@ -30,14 +30,6 @@ export default class LevelTwo extends BaseScene {
             this.scene.start('LevelOne', { player: this.player });
         }
 
-        
-        
-
-        // Victory
-        if (this.enemyArray.every(enemy => enemy.isDestroyed) && this.waveCount >= this.waveCountMax) {
-            this.add.text(this.game.config.width / 2, this.game.config.height / 2, 'Victory!', { fontSize: '50px', fill: '#FFFFFF' }).setOrigin(0.5);
-        }
-
         // End of update    
     }
-}
+} */

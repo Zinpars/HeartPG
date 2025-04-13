@@ -8,12 +8,13 @@ import Tooltip from "./Tooltip.js";
 import Layers from "./Layers.js";
 
 export default class BaseScene extends Phaser.Scene {
-    constructor(key) {
-        super({ key })
-        this.scene = key;
+    constructor() {
+        super("BaseScene")
     }
 
-    baseCreate(data) {
+    create(data) {
+        this.level = data.level;
+        this.waveCountMax = this.level.waveCountMax;
         this.player = new Player(this, 0, 0);
         if (data.player) {
             this.player.setupPlayer(this, data.player);
@@ -24,6 +25,7 @@ export default class BaseScene extends Phaser.Scene {
 
         this.waveCount = 1;
         this.enemyArray = [];
+        
 
         this.tooltip = new Tooltip(this, this.player);
         this.tooltip.createTooltipWindow(this);
@@ -54,7 +56,7 @@ export default class BaseScene extends Phaser.Scene {
         })
 
         // Create first wave
-        this.createWave(this.waveCount, this.scene.key);
+        this.createWave(this.waveCount, this.level.id);
     }
 
     update() {
@@ -122,6 +124,20 @@ export default class BaseScene extends Phaser.Scene {
             this.skillBar.updateExperienceBar(this.player);
             this.skillBar.experienceBar.text.setText(`Level: ${this.player.level}       Exp: ${this.player.experience} / ${this.player.experienceToLevelUp}`);
             this.increaseWaveCount();
+            this.checkVictory();
+        }
+    }
+
+    checkVictory() {
+        // Victory
+        if (this.enemyArray.every(enemy => enemy.isDestroyed) && this.waveCount >= this.waveCountMax) {
+            this.add.text(this.game.config.width / 2, this.game.config.height / 2, 'Victory!', { fontSize: '50px', fill: '#FFFFFF' }).setOrigin(0.5);
+            this.time.addEvent({
+                delay: 2000,
+                callback: () => {
+                    this.scene.start("LevelSelect", { player: this.player });
+                }               
+            })
         }
     }
 
@@ -132,7 +148,7 @@ export default class BaseScene extends Phaser.Scene {
             this.waveCountText.setText('Wave Count: ' + this.waveCount);
             this.enemyArray = [];
 
-            this.createWave(this.waveCount, this.scene.key);
+            this.createWave(this.waveCount, this.level.id);
         }
     }
 

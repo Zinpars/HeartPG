@@ -3,7 +3,7 @@ import Layers from "./Layers.js";
 export default class Player extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y, texture, frame) {
         super(scene, x, y, "redHeart")
-        
+
         console.log("playwe")
         this.scene = scene;
         this.x = x;
@@ -32,8 +32,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             this.healthBar,
         ]);
         this.playerContainer.setSize(50, 50).setDepth(Layers.PLAYER);
-        
-        
+
+
 
         // Enable physics for player
         this.scene.physics.world.enable(this);
@@ -55,15 +55,15 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     setupPlayer(scene, player) {
-      this.experience = player.experience;
-      this.experienceToLevelUp = player.experienceToLevelUp;
+        this.experience = player.experience;
+        this.experienceToLevelUp = player.experienceToLevelUp;
         this.attackDamage = player.attackDamage;
         this.attackCooldown = player.attackCooldown;
         this.attackRange = player.attackRange;
         this.attackDuration = player.attackDuration;
         this.level = player.level;
         this.maxHealth = player.maxHealth;
-        this.health = player.health;
+    //    this.health = player.health;
         this.speed = player.speed;
     }
 
@@ -82,7 +82,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         if (this.cursors.down.isDown || this.s.isDown) {
             this.playerContainer.y += this.speed;
         }
-        
+
     }
 
 
