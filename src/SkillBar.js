@@ -48,9 +48,10 @@ export default class SkillBar {
 
     createExperienceBar(scene, player) {
         this.experienceBar = {};
-        this.experienceBar.background = scene.add.rectangle(this.width / 2, 10, this.width - 20, 20, 0x333333, 0.5).setOrigin(0.5);
+        this.experienceBar.background = scene.add.rectangle(this.width / 2, 10, this.width - 20, 20, 0xcccccc, 0.5).setOrigin(0.5);
         const expWidth = player.experience / player.experienceToLevelUp * this.experienceBar.background.width;
         this.experienceBar.bar = scene.add.rectangle(this.experienceBar.background.x - this.experienceBar.background.width / 2, 10, expWidth, 20, 0x00ff00, 1).setOrigin(0, 0.5);
+        this.experienceBar.text = scene.add.text(this.experienceBar.background.x, 10, `Level: ${player.level}       Exp: ${player.experience} / ${player.experienceToLevelUp}`, { fontSize: '16px', fill: '#000' }).setOrigin(0.5);
     }
 
     updateExperienceBar(player) {

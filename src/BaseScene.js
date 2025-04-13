@@ -114,9 +114,11 @@ export default class BaseScene extends Phaser.Scene {
                 // Award experience
                 this.player.experience += enemy.experience || 1;
                 this.player.experienceText.setText('Player Experience: ' + this.player.experience);
-                this.skillBar.updateExperienceBar(this.player);
+                
 
                 this.checkLevelUp();
+                this.skillBar.updateExperienceBar(this.player);
+                this.skillBar.experienceBar.text.setText(`Level: ${this.player.level}       Exp: ${this.player.experience} / ${this.player.experienceToLevelUp}`);
                 this.increaseWaveCount();
             }
     }
@@ -136,7 +138,7 @@ export default class BaseScene extends Phaser.Scene {
     checkLevelUp() {
         if (this.player.experience >= this.player.experienceToLevelUp) {
             // Reset experience
-            this.player.experience = 0;           
+            this.player.experience = 0 + this.player.experience - this.player.experienceToLevelUp;           
             this.player.experienceText.setText('Player Experience: ' + this.player.experience);
 
             // Increase level
@@ -145,7 +147,7 @@ export default class BaseScene extends Phaser.Scene {
 
             // Update experience to level Up
             this.player.experienceToLevelUp += 5 * this.player.level;
-
+            
             // Level up animation
             const levelup = this.add.sprite(0, -30, 'levelup').setOrigin(0.5).setScale(0.3).setAlpha(0);
             this.player.playerContainer.add(levelup);

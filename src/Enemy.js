@@ -38,6 +38,8 @@ export default class Enemy {
         this.health = this.maxHealth;
         this.healthBar = scene.add.rectangle(0, -50, this.health / this.maxHealth * 50, 10, 0x00FF00).setOrigin(0.5);
         this.damage = enemyType.damage || 1;
+        this.experience = enemyType.experience || 1; 
+
 
         // Enable physics for enemy
         scene.physics.world.enable(this.sprite);
