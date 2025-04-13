@@ -7,8 +7,8 @@ export default class Debugging {
 
     create() {
         // Create debugging
-        this.player.playerContainerXText = this.scene.add.text(10, 50, 'Player Container X: ' + this.player.playerContainer.x);
-        this.player.playerContainerYText = this.scene.add.text(10, 70, 'Player Container Y: ' + this.player.playerContainer.y);
+       // this.player.playerContainerXText = this.scene.add.text(10, 50, 'Player Container X: ' + this.player.playerContainer.x);
+       // this.player.playerContainerYText = this.scene.add.text(10, 70, 'Player Container Y: ' + this.player.playerContainer.y);
        // this.enemy.healthText = this.scene.add.text(10, 90, 'Enemy Health: ' + this.enemy.health);
         this.player.healthText = this.scene.add.text(10, 110, 'Player Health: ' + this.player.health);
         this.player.experienceText = this.scene.add.text(10, 130, 'Player Experience: ' + this.player.experience);
@@ -18,8 +18,8 @@ export default class Debugging {
 
     update() {
         // Update debugging
-        this.player.playerContainerXText.setText('Player Container X: ' + this.player.playerContainer.x);
-        this.player.playerContainerYText.setText('Player Container Y: ' + this.player.playerContainer.y);
+       // this.player.playerContainerXText.setText('Player Container X: ' + this.player.playerContainer.x);
+       // this.player.playerContainerYText.setText('Player Container Y: ' + this.player.playerContainer.y);
     }
 
 

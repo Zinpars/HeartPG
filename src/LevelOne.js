@@ -18,8 +18,7 @@ export default class LevelOne extends BaseScene {
     }
 
     create(data) {
-        console.log(this.data);
-        this.baseCreate();
+        this.baseCreate(data);
         this.waveCountMax = 5;
 
         // Create door
@@ -40,8 +39,13 @@ export default class LevelOne extends BaseScene {
 
 
         // Enter Door
-        if (this.physics.overlap(this.player.sprite, this.door)) {
-            this.scene.start('LevelTwo');
+        if (this.physics.overlap(this.player, this.door)) {
+            this.player.isInCutscene = true;
+            if (this.playerContainer) {
+                this.playerContainer.destroy();
+            }
+            console.log(this.playerContainer)
+            this.scene.start('LevelTwo', { player: this.player });           
         }
 
         

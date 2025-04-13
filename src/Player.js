@@ -1,12 +1,16 @@
-export default class Player {
-    constructor(scene, x, y) {
+import Layers from "./Layers.js";
+
+export default class Player extends Phaser.Physics.Arcade.Sprite {
+    constructor(scene, x, y, texture, frame) {
+        super(scene, x, y, "redHeart")
+        
+        console.log("playwe")
         this.scene = scene;
         this.x = x;
         this.y = y;
 
         // Create player
         this.name = "Player";
-        this.sprite = this.scene.add.sprite(0, 0, 'redHeart');
         this.maxHealth = 3;
         this.health = this.maxHealth;
         this.speed = 5;
@@ -24,17 +28,17 @@ export default class Player {
         // Create player Container
         this.healthBar = this.scene.add.rectangle(this.x, this.y - 50, this.health / this.maxHealth * 50, 10, 0x00FF00).setOrigin(0.5);
         this.playerContainer = this.scene.add.container(this.scene.game.config.width * 0.5, 500, [
-            this.sprite,
+            this,
             this.healthBar,
         ]);
-        this.playerContainer.setSize(50, 50);
+        this.playerContainer.setSize(50, 50).setDepth(Layers.PLAYER);
         
         
 
         // Enable physics for player
-        this.scene.physics.world.enable(this.sprite);
-        this.sprite.body.setAllowGravity(false);
-        this.sprite.body.setSize(this.sprite.width / 2, this.sprite.height / 2);
+        this.scene.physics.world.enable(this);
+        this.body.setAllowGravity(false);
+        this.body.setSize(this.width / 2, this.height / 2);
 
         this.scene.physics.world.enable(this.playerContainer);
         this.playerContainer.body.setCollideWorldBounds(true);
@@ -50,8 +54,17 @@ export default class Player {
         this.d = this.scene.input.keyboard.addKey('D');
     }
 
-    setupPlayer() {
-        console.log("setupPlayer");
+    setupPlayer(scene, player) {
+      this.experience = player.experience;
+      this.experienceToLevelUp = player.experienceToLevelUp;
+        this.attackDamage = player.attackDamage;
+        this.attackCooldown = player.attackCooldown;
+        this.attackRange = player.attackRange;
+        this.attackDuration = player.attackDuration;
+        this.level = player.level;
+        this.maxHealth = player.maxHealth;
+        this.health = player.health;
+        this.speed = player.speed;
     }
 
     movement() {
@@ -69,6 +82,7 @@ export default class Player {
         if (this.cursors.down.isDown || this.s.isDown) {
             this.playerContainer.y += this.speed;
         }
+        
     }
 
 

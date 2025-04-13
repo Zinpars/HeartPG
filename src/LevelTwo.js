@@ -8,8 +8,7 @@ export default class LevelTwo extends BaseScene {
     }
 
     create(data) {
-        console.log(this.data);
-        this.baseCreate();
+        this.baseCreate(data);
         this.waveCountMax = 5;
 
         // Create door
@@ -18,9 +17,6 @@ export default class LevelTwo extends BaseScene {
         this.door.body.setAllowGravity(false);
 
 
-        // Create enemyArray
-        this.enemyArray = [];
-        this.createWave(this.waveCount, "LevelTwo");
 
         // End of create 
     }
@@ -30,8 +26,8 @@ export default class LevelTwo extends BaseScene {
 
 
         // Enter Door
-        if (this.physics.overlap(this.player.sprite, this.door)) {
-            this.scene.start('LevelOne');
+        if (this.physics.overlap(this.player, this.door)) {
+            this.scene.start('LevelOne', { player: this.player });
         }
 
         

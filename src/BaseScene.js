@@ -13,9 +13,11 @@ export default class BaseScene extends Phaser.Scene {
         this.scene = key;
     }
 
-    baseCreate() {
+    baseCreate(data) {
         this.player = new Player(this, 0, 0);
-        this.player.setupPlayer(this, 500, 500);
+        if (data.player) {
+            this.player.setupPlayer(this, data.player);
+        }
 
         this.debugging = new Debugging(this, this.player, this.enemy);
         this.debugging.create();
@@ -58,11 +60,11 @@ export default class BaseScene extends Phaser.Scene {
     update() {
         // Enemy movement
         for (let i = 0; i < this.enemyArray.length; i++) {
-            this.enemyArray[i].update();
+            this.enemyArray[i].update(this.player.playerContainer);
         }
 
         // Player movement
-        if (this.player.isInCutscene) return;       
+        if (this.player.isInCutscene) return;
         this.player.movement();
 
         // Update Debugging
@@ -95,10 +97,10 @@ export default class BaseScene extends Phaser.Scene {
         if (this.meleeHitBox) {
             this.enemyGotHit(this.player.attackDamage, this.meleeHitBox);
         }
-         if (this.skills.meteor.sprite) {
+        if (this.skills.meteor.sprite) {
             this.enemyGotHit(this.skills.meteor.damage, this.skills.meteor.sprite);
         }
-       if (this.skills.fireball.sprite) {
+        if (this.skills.fireball.sprite) {
             this.enemyGotHit(this.skills.fireball.damage, this.skills.fireball.sprite);
         }
         if (this.skills.fireAura.sprite) {
@@ -107,20 +109,20 @@ export default class BaseScene extends Phaser.Scene {
     }
 
     handleEnemyDeaths(enemy) {
-            if (enemy.health <= 0 && !enemy.isDestroyed) {
-                enemy.isDestroyed = true;
-                enemy.container.destroy();
+        if (enemy.health <= 0 && !enemy.isDestroyed) {
+            enemy.isDestroyed = true;
+            enemy.container.destroy();
 
-                // Award experience
-                this.player.experience += enemy.experience || 1;
-                this.player.experienceText.setText('Player Experience: ' + this.player.experience);
-                
+            // Award experience
+            this.player.experience += enemy.experience || 1;
+            this.player.experienceText.setText('Player Experience: ' + this.player.experience);
 
-                this.checkLevelUp();
-                this.skillBar.updateExperienceBar(this.player);
-                this.skillBar.experienceBar.text.setText(`Level: ${this.player.level}       Exp: ${this.player.experience} / ${this.player.experienceToLevelUp}`);
-                this.increaseWaveCount();
-            }
+
+            this.checkLevelUp();
+            this.skillBar.updateExperienceBar(this.player);
+            this.skillBar.experienceBar.text.setText(`Level: ${this.player.level}       Exp: ${this.player.experience} / ${this.player.experienceToLevelUp}`);
+            this.increaseWaveCount();
+        }
     }
 
     // Wave count
@@ -129,16 +131,16 @@ export default class BaseScene extends Phaser.Scene {
             this.waveCount += 1;
             this.waveCountText.setText('Wave Count: ' + this.waveCount);
             this.enemyArray = [];
-            
+
             this.createWave(this.waveCount, this.scene.key);
         }
     }
-    
+
 
     checkLevelUp() {
         if (this.player.experience >= this.player.experienceToLevelUp) {
             // Reset experience
-            this.player.experience = 0 + this.player.experience - this.player.experienceToLevelUp;           
+            this.player.experience = 0 + this.player.experience - this.player.experienceToLevelUp;
             this.player.experienceText.setText('Player Experience: ' + this.player.experience);
 
             // Increase level
@@ -147,7 +149,7 @@ export default class BaseScene extends Phaser.Scene {
 
             // Update experience to level Up
             this.player.experienceToLevelUp += 5 * this.player.level;
-            
+
             // Level up animation
             const levelup = this.add.sprite(0, -30, 'levelup').setOrigin(0.5).setScale(0.3).setAlpha(0);
             this.player.playerContainer.add(levelup);
@@ -167,20 +169,20 @@ export default class BaseScene extends Phaser.Scene {
 
     playerGotHit() {
         this.enemyArray.forEach(enemy => {
-            this.physics.add.overlap(this.player.sprite, enemy.sprite, () => {
+            this.physics.add.overlap(this.player, enemy.sprite, () => {
                 if (!this.player.invulnerable) {
                     this.player.health -= enemy.damage;
                     this.checkGameOver();
                     this.updateHealthBar(this.player);
 
                     // Make player invulnerable for 1 second
-                    this.player.sprite.setTint(0x0000ff);
+                    this.player.setTint(0x0000ff);
                     this.player.invulnerable = true;
                     this.time.addEvent({
                         delay: 1000,
                         callback: () => {
                             this.player.invulnerable = false;
-                            this.player.sprite.clearTint();
+                            this.player.clearTint();
                         }
                     });
                 }
@@ -207,7 +209,7 @@ export default class BaseScene extends Phaser.Scene {
                 alpha: 1,
                 duration: 2000,
                 onComplete: () => {
-                    this.scene.restart();
+                    this.scene.start("MainMenu", { player: this.player });
                 }
             })
         }
@@ -257,7 +259,9 @@ export default class BaseScene extends Phaser.Scene {
             });
         });
     }
-    
+
+
+
 }
 
 

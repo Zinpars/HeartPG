@@ -10,18 +10,18 @@ export default class Enemy {
         this.createEnemy(x, y, type, scene);    
     }
 
-    update() {
+    update(playerContainer) {
         // Dummy movement logic
-        if (this.playerContainer.x < this.container.x) {
+        if (playerContainer.x < this.container.x) {
             this.container.x -= this.speed;
         }
-        if (this.playerContainer.x > this.container.x) {
+        if (playerContainer.x > this.container.x) {
             this.container.x += this.speed;
         }
-        if (this.playerContainer.y < this.container.y) {
+        if (playerContainer.y < this.container.y) {
             this.container.y -= this.speed;
         }
-        if (this.playerContainer.y > this.container.y) {
+        if (playerContainer.y > this.container.y) {
             this.container.y += this.speed;
         }
     }
