@@ -1,3 +1,5 @@
+// TODO: Refactor this to make it more like LAyers.js
+
 export default class WavePositions {
     constructor(gameWidth) {
         this.positions = {};
