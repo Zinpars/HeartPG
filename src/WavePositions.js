@@ -1,9 +1,5 @@
-// TODO: Refactor this to make it more like LAyers.js
-
-export default class WavePositions {
-    constructor(gameWidth) {
-        this.positions = {};
-        this.positions.one = [
+const WavePositions = (gameWidth) => Object.freeze({
+        LevelOne: [
             // Wave 1 positions
             [
                 { x: gameWidth * 0.5, y: 100 },
@@ -52,27 +48,50 @@ export default class WavePositions {
                 { x: gameWidth * 0.5, y: 100 },
             ]
         ],
+        LevelTwo: [
+            // Wave 1 positions
+            [
+                { x: gameWidth * 0.3, y: 100 },
+                { x: gameWidth * 0.5, y: 100, type: "orangeHeart" },
+                { x: gameWidth * 0.7, y: 100 }
+            ],
+            // Wave 2 positions
+            [
+                { x: gameWidth * 0.3, y: 100 },
+                { x: gameWidth * 0.4, y: 100, type: "orangeHeart" },
+                { x: gameWidth * 0.5, y: 100, type: "yellowHeart" },
+                { x: gameWidth * 0.6, y: 100, type: "orangeHeart" },
+                { x: gameWidth * 0.7, y: 100 }
+            ],
+            // Wave 6 positions
+            [
+                { x: gameWidth * 0.3, y: 100 },
+                { x: gameWidth * 0.4, y: 100 },
+                { x: gameWidth * 0.5, y: 100 },
+            ],
+            // Wave 4 positions
+            [
+                { x: gameWidth * 0.3, y: 100 },
+                { x: gameWidth * 0.4, y: 100 },
+                { x: gameWidth * 0.5, y: 100 },
+                { x: gameWidth * 0.6, y: 100 },
+                { x: gameWidth * 0.7, y: 100 },
+                { x: gameWidth * 0.3, y: 200 },
+                { x: gameWidth * 0.8, y: 200 },
+            ],
+            // Wave 5 positions
+            [
+                { x: gameWidth * 0.3, y: 100 },
+                { x: gameWidth * 0.4, y: 100 },
+                { x: gameWidth * 0.5, y: 100, type: "heartBoss" },
+                { x: gameWidth * 0.6, y: 100 },
+                { x: gameWidth * 0.7, y: 100 },
+                { x: gameWidth * 0.3, y: 200 },
+                { x: gameWidth * 0.3, y: 300 },
+                { x: gameWidth * 0.8, y: 200 },
+                { x: gameWidth * 0.8, y: 300 },
+            ],
+        ]
+    })
 
-            this.positions.two = [
-
-            ]
-    }
-
-    getPositions(waveCount, level) {
-        // Check if the level exists in positions
-        const levelPositions = this.positions[level];
-        if (!levelPositions) {
-            console.error(`Level "${level}" does not exist in positions.`);
-            return [];
-        }
-
-        // Check if the wave count exists for the level
-        const wavePositions = levelPositions[waveCount - 1];
-        if (!wavePositions) {
-            console.warn(`Wave count "${waveCount}" does not exist for level "${level}". Returning an empty array.`);
-            return [];
-        }
-
-        return wavePositions;
-    }
-}
+    export default WavePositions;

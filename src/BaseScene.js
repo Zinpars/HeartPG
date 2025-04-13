@@ -5,6 +5,7 @@ import WavePositions from "./WavePositions.js";
 import Skills from "./Skills.js";
 import SkillBar from "./SkillBar.js";
 import Tooltip from "./Tooltip.js";
+import Layers from "./Layers.js";
 
 export default class BaseScene extends Phaser.Scene {
     constructor(key) {
@@ -49,6 +50,9 @@ export default class BaseScene extends Phaser.Scene {
             this.skills.castSkill("castFireAura", this.player);
             this.enemyGotHit(this.skills.fireAura.damage, this.skills.fireAura.sprite);
         })
+
+        // Create first wave
+        this.createWave(this.waveCount, this.scene.key);
     }
 
     update() {
@@ -78,8 +82,7 @@ export default class BaseScene extends Phaser.Scene {
 
     createWave(waveCount, level) {
         // Get positions for enemies from WavePositions
-        const wavePos = new WavePositions(this.game.config.width)
-        const positions = wavePos.getPositions(waveCount, level);
+        const positions = WavePositions(this.game.config.width)[level][waveCount - 1];
 
         // Create enemies
         positions.forEach(pos => {
@@ -114,8 +117,21 @@ export default class BaseScene extends Phaser.Scene {
                 this.skillBar.updateExperienceBar(this.player);
 
                 this.checkLevelUp();
+                this.increaseWaveCount();
             }
     }
+
+    // Wave count
+    increaseWaveCount() {
+        if (this.enemyArray.every(enemy => enemy.isDestroyed) && this.waveCount < this.waveCountMax) {
+            this.waveCount += 1;
+            this.waveCountText.setText('Wave Count: ' + this.waveCount);
+            this.enemyArray = [];
+            
+            this.createWave(this.waveCount, this.scene.key);
+        }
+    }
+    
 
     checkLevelUp() {
         if (this.player.experience >= this.player.experienceToLevelUp) {
