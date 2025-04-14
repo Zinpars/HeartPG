@@ -1,5 +1,5 @@
 import BaseScene from './BaseScene.js';
-import Levels from "./Levels.js";
+import Levels from "../config/Levels.js";
 
 export default class MainMenu extends Phaser.Scene {
     constructor() {

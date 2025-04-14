@@ -1,4 +1,4 @@
-import EnemyTypes from "./EnemyTypes.js";
+import EnemyTypes from "../config/EnemyTypes.js";
 
 export default class Enemy {
     constructor(scene, x, y, type = "redHeart", playerContainer) {

@@ -1,4 +1,4 @@
-import Levels from "./Levels.js";
+import Levels from "../config/Levels.js";
 
 export default class LevelSelect extends Phaser.Scene {
     constructor() {

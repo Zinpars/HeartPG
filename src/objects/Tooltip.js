@@ -1,4 +1,4 @@
-import Layers from "./Layers.js";
+import Layers from "../config/Layers.js";
 
 export default class Tooltip {
     constructor(element) {

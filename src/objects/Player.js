@@ -1,4 +1,4 @@
-import Layers from "./Layers.js";
+import Layers from "../config/Layers.js";
 
 export default class Player extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y, texture, frame) {

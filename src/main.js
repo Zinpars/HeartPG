@@ -1,6 +1,6 @@
-import BaseScene from './BaseScene.js';
-import MainMenu from './MainMenu.js';
-import LevelSelect from './LevelSelect.js';
+import BaseScene from './scenes/BaseScene.js';
+import MainMenu from './scenes/MainMenu.js';
+import LevelSelect from './scenes/LevelSelect.js';
 
 
 

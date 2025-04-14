@@ -1,11 +1,11 @@
-import Player from "./Player.js"
-import Enemy from "./Enemy.js"
-import Debugging from "./Debugging.js";
-import WavePositions from "./WavePositions.js";
-import Skills from "./Skills.js";
-import SkillBar from "./SkillBar.js";
-import Tooltip from "./Tooltip.js";
-import Layers from "./Layers.js";
+import Player from "../objects/Player.js"
+import Enemy from "../objects/Enemy.js"
+import Debugging from "../objects/Debugging.js";
+import WavePositions from "../config/WavePositions.js";
+import Skills from "../objects/Skills.js";
+import SkillBar from "../objects/SkillBar.js";
+import Tooltip from "../objects/Tooltip.js";
+import Layers from "../config/Layers.js";
 
 export default class BaseScene extends Phaser.Scene {
     constructor() {
