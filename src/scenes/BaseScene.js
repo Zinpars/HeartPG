@@ -5,6 +5,7 @@ import WavePositions from "../config/WavePositions.js";
 import Skills from "../objects/Skills.js";
 import SkillBar from "../objects/SkillBar.js";
 import Tooltip from "../objects/Tooltip.js";
+import Navigation from "../objects/Navigation.js";
 import Layers from "../config/Layers.js";
 
 export default class BaseScene extends Phaser.Scene {
@@ -25,10 +26,13 @@ export default class BaseScene extends Phaser.Scene {
 
         this.waveCount = 1;
         this.enemyArray = [];
+
+        this.navSpawnY = -25;
+        this.toggleNav = false;
+        this.navigation = new Navigation(this, undefined, this.navSpawnY)
         
 
-        this.tooltip = new Tooltip(this, this.player);
-        this.tooltip.createTooltipWindow(this);
+        this.tooltip = new Tooltip(this);
 
         this.skillBar = new SkillBar(this, this.player);
         this.skills = new Skills(this, this.player, this.skillBar);
@@ -53,6 +57,18 @@ export default class BaseScene extends Phaser.Scene {
         this.input.keyboard.on("keydown-THREE", () => {
             this.skills.castSkill("castFireAura", this.player);
             this.enemyGotHit(this.skills.fireAura.damage, this.skills.fireAura.sprite);
+        })
+
+        this.input.keyboard.on("keydown-ESC", () => {
+            
+            let destination = 50;
+            this.toggleNav ? destination = this.navSpawnY : destination = 50;
+            this.tweens.add({
+                targets: this.navigation,
+                y: destination,
+                duration: 500
+            })
+            this.toggleNav = !this.toggleNav;
         })
 
         // Create first wave

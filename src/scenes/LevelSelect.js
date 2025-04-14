@@ -1,4 +1,5 @@
 import Levels from "../config/Levels.js";
+import Navigation from "../objects/Navigation.js";
 
 export default class LevelSelect extends Phaser.Scene {
     constructor() {
@@ -10,8 +11,7 @@ export default class LevelSelect extends Phaser.Scene {
         for (let i = 1; i <= Object.keys(Levels).length; i++) {
             this.createLevelButton(200 * (i), 300, Levels[i]);
         }
-
-
+        const navigation = new Navigation(this);
     }
 
     createLevelButton(x, y, level) {

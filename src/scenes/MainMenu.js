@@ -1,5 +1,6 @@
 import BaseScene from './BaseScene.js';
 import Levels from "../config/Levels.js";
+import Navigation from "../objects/Navigation.js";
 
 export default class MainMenu extends Phaser.Scene {
     constructor() {
@@ -27,7 +28,7 @@ export default class MainMenu extends Phaser.Scene {
         // Create controls
         this.cursors = this.input.keyboard.createCursorKeys();
         
-        // Create start button
+       /*  // Create start button
         let startButton = this.add.rectangle(this.game.config.width * 0.5, this.game.config.height * 0.5, 200, 50, 0x222222).setInteractive();
         this.add.text(this.game.config.width * 0.5, this.game.config.height * 0.5, 'Start').setOrigin(0.5);
         startButton.on('pointerdown', () => {
@@ -44,7 +45,9 @@ export default class MainMenu extends Phaser.Scene {
         this.add.text(this.game.config.width * 0.5, this.game.config.height * 0.8, 'Level Selection').setOrigin(0.5);
         levelButton.on('pointerdown', () => {
             this.scene.start('LevelSelect', { player: this.player });
-        });
+        }); */
+
+        const navigation = new Navigation(this);
 
     }
 

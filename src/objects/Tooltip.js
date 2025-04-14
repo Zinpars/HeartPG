@@ -1,8 +1,9 @@
 import Layers from "../config/Layers.js";
 
 export default class Tooltip {
-    constructor(element) {
+    constructor(scene) {
         this.padding = 10;
+        this.createTooltipWindow(scene);
     }
 
     createTooltipWindow(scene) {
@@ -12,10 +13,6 @@ export default class Tooltip {
             fill: '#fff',
             wordWrap: { width: 200 } // Wrap text at 200px width
         }).setOrigin(0.5);
-
-        // Dynamically calculate the size of the background based on the text
-        let backgroundWidth = tooltipText.width + this.padding * 2;
-        let backgroundHeight = tooltipText.height + this.padding * 2;
 
         // Create the background rectangle
         this.tooltipBackground = scene.add.rectangle(
